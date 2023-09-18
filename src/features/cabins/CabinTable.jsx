@@ -5,27 +5,13 @@ import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 import { useSearchParams } from "react-router-dom";
 
-// const TableHeader = styled.header`
-//   display: grid;
-//   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-//   column-gap: 2.4rem;
-//   align-items: center;
-
-//   background-color: var(--color-grey-50);
-//   border-bottom: 1px solid var(--color-grey-100);
-//   text-transform: uppercase;
-//   letter-spacing: 0.4px;
-//   font-weight: 600;
-//   color: var(--color-grey-600);
-//   padding: 1.6rem 2.4rem;
-// `;
-
 function CabinTable() {
   const { isLoading, cabins } = useCabins();
   const [searchParams] = useSearchParams();
 
   if (isLoading) return <Spinner />;
 
+  // 1) FILTERING
   const filterValue = searchParams.get("discount") || "all";
 
   let filteredCabins;
@@ -35,7 +21,27 @@ function CabinTable() {
   if (filterValue === "with-discount")
     filteredCabins = cabins.filter((cabin) => cabin.discount > 0);
 
-  console.log(filteredCabins);
+  // console.log(filteredCabins);
+
+  // 2) SORTING
+  const sortBy = searchParams.get("sortBy") || "name-asc";
+  const [field, direction] = sortBy.split("-");
+  const modifier = direction === "asc" ? 1 : -1;
+
+  function compare(a, b) {
+    if (a["name"].toLowerCase() < b["name"].toLowerCase()) {
+      return -1 * modifier;
+    }
+    if (a["name"].toLowerCase() > b["name"].toLowerCase()) {
+      return 1 * modifier;
+    }
+    return 0;
+  }
+
+  const sortedCabins =
+    field === "name"
+      ? filteredCabins.sort(compare)
+      : filteredCabins.sort((a, b) => (a[field] - b[field]) * modifier);
 
   return (
     <Menus>
@@ -49,10 +55,9 @@ function CabinTable() {
           <div></div>
         </Table.Header>
         <Table.Body
-          data={filteredCabins}
-          render={(cabin) => (
-            <CabinRow cabin={cabin} key={cabin.id} />
-          )}
+          // data={filteredCabins}
+          data={sortedCabins}
+          render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
         />
       </Table>
     </Menus>
