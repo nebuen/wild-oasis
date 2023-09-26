@@ -19,7 +19,8 @@ export function useBookings() {
     data: bookings,
     error,
   } = useQuery({
-    queryKey: ["bookings"],
+    // added filter object, whenever the filter changes, the query will be refetched
+    queryKey: ["bookings", filter],
     // create new function which is the arrow function so we can pass in that object of options
     queryFn: () => getBookings({ filter }),
   });
