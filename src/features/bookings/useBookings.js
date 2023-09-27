@@ -12,7 +12,13 @@ export function useBookings() {
   const filter =
     !filterValue || filterValue === "all"
       ? null
-      : { field: "status", value: filterValue };
+      : { field: "status", value: filterValue, method: "eq" };
+
+  // SORT
+  const sortByRaw = searchParams.get("sortBy") || "startDate-desc";
+  // destructure the value and split it, to get the (startDate and desc)
+  const [field, direction] = sortByRaw.split("-");
+  const sortBy = { field, direction };
 
   const {
     isLoading,
@@ -20,9 +26,9 @@ export function useBookings() {
     error,
   } = useQuery({
     // added filter object, whenever the filter changes, the query will be refetched
-    queryKey: ["bookings", filter],
+    queryKey: ["bookings", filter, sortBy],
     // create new function which is the arrow function so we can pass in that object of options
-    queryFn: () => getBookings({ filter }),
+    queryFn: () => getBookings({ filter, sortBy }),
   });
 
   return { isLoading, error, bookings };
