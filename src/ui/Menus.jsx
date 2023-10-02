@@ -1,9 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
-import {
-  HiEllipsisHorizontal,
-  HiEllipsisVertical,
-} from "react-icons/hi2";
+import { HiEllipsisHorizontal, HiEllipsisVertical } from "react-icons/hi2";
 import styled from "styled-components";
 import { useOutsideClick } from "../hooks/useOutsideClick";
 
@@ -86,8 +83,7 @@ function Menus({ children }) {
 }
 
 function Toggle({ id }) {
-  const { openId, close, open, setPosition } =
-    useContext(MenusContext);
+  const { openId, close, open, setPosition } = useContext(MenusContext);
 
   // getting the position of the button, so we can position the menu
   function handleClick(e) {
@@ -97,6 +93,7 @@ function Toggle({ id }) {
       y: rect.y + rect.height + 8,
     });
 
+    // if openId is empty or openId is not equal to id, then open the menu
     openId === "" || openId !== id ? open(id) : close();
   }
 
