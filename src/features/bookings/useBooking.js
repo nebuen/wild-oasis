@@ -10,6 +10,7 @@ export function useBooking() {
     data: booking,
     error,
   } = useQuery({
+    // we added second parameter which is the bookingId
     queryKey: ["booking", bookingId],
     queryFn: () => getBooking(bookingId),
     // we want to make sure that the query is not refetched
