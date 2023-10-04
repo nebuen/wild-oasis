@@ -10,7 +10,7 @@ export function useBooking() {
     data: booking,
     error,
   } = useQuery({
-    queryKey: ["booking"],
+    queryKey: ["booking", bookingId],
     queryFn: () => getBooking(bookingId),
     // we want to make sure that the query is not refetched
     // react-query will automatically refetch the query when the component mounts
