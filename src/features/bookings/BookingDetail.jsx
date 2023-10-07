@@ -18,7 +18,7 @@ const HeadingGroup = styled.div`
   gap: 2.4rem;
   align-items: center;
 `;
-
+// Compare this snippet from src/features/bookings/BookingDetail.jsx:
 function BookingDetail() {
   const { booking, isLoading } = useBooking();
 
