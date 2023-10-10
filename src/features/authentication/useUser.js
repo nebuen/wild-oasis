@@ -8,7 +8,7 @@ export function useUser() {
     error,
   } = useQuery({
     queryKey: ["user"],
-    queryFn: () => getCurrentUser(),
+    queryFn: getCurrentUser,
   });
   return {
     isLoading,
